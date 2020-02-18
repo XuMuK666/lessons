@@ -1,0 +1,54 @@
+
+#СТЕК
+a = []
+#заполняем массив
+for i in range(10):
+    a.append(i)
+print(a)
+#очищаем массив
+for i in range(10):
+	print(a.pop())
+print(a)
+
+#Проход по элементам массива
+a = []
+for i in range(10):
+    a.append(i)
+	
+for i in range(len(a)):
+	print(a[i]) #a[0]
+	
+for i in a:
+	print (i)
+	
+a.pop(5)
+
+#Слайлс, срез
+a = [1,2,3,4,5,6,7,8,9,10]
+print(a[:5]) #не включает последний элемент
+print(a[3:5]) 
+print(a[5:]) #включает первый элемент
+
+#Очередь
+a = [1,2,3,4,5,6,7,8,9,10]
+while len(a)>0:
+	a.pop(0)
+	print(a)
+
+#Работа со строками
+str = str(input())
+print(str)
+print(str[5:])
+
+#Sorting
+a = [3,2,1,5,6,0]
+a.sort()
+print(a)
+
+#find
+a = "hgegjhdjekld"
+#find
+print(a.find("hd")) #начало вхождения,
+					#либо -1
+
+
