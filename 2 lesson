@@ -52,3 +52,45 @@ print(a.find("hd")) #начало вхождения,
 					#либо -1
 
 
+def sort():
+	magic111
+	return None
+
+
+
+
+
+a = [1,1,1,1]
+#Словари
+dict = {}
+dict["power"] = ["мощь", "сила"]
+print(dict["power"])
+
+massiv = [{"key":"value",...}, {...}]
+
+#Справочник экстренных служб
+#Название, телефон, адреса филиалов
+
+dict = {}
+medical = []
+for i in range(10):
+    medical.append({
+	"Name": "Ambulance",
+	"Address":"Moscow, baumanskaya st., " + str(i),
+    "tel":"8(800)555-35-5"+ str(i),
+	"tel2":103})
+dict["medical"] = medical
+for i in dict[input("Введите название ключа: \n")]:
+    print(i)
+#Поиск адреса по номеру телефона
+tel = input("Input number \t")
+for item in dict['medical']: #array
+	if item['tel2'] == tel:
+		print(item['Address'])
+
+dict[key] - возвращает значение словаря по данному ключу
+
+#Задача: найти адрес больницы по телефону
+
+
+
