@@ -19,3 +19,6 @@ SELECT student.Name, student.Surname FROM kafedra
 INNER JOIN student_has_kafedra ON student_has_kafedra.kafedra_idkafedra = idkafedra
 INNER JOIN student ON student.idstudent = student_has_kafedra.student_idstudent
 WHERE kafedra.name = "иу10";
+
+
+DELETE FROM mydb.kafedra WHERE idkafedra=1;
