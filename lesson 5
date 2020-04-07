@@ -8,3 +8,8 @@ SELECT * FROM student_has_kafedra where kafedra_idkafedra = (SELECT idkafedra FR
 SELECT t1.student_idstudent FROM kafedra
 INNER JOIN (SELECT * FROM student_has_kafedra) t1 ON t1.kafedra_idkafedra = idkafedra
 WHERE name = "иу10";
+
+или 
+SELECT student_has_kafedra.student_idstudent FROM kafedra
+INNER JOIN student_has_kafedra ON student_has_kafedra.kafedra_idkafedra = idkafedra
+WHERE name = "иу10";
