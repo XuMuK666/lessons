@@ -20,5 +20,5 @@ INNER JOIN student_has_kafedra ON student_has_kafedra.kafedra_idkafedra = idkafe
 INNER JOIN student ON student.idstudent = student_has_kafedra.student_idstudent
 WHERE kafedra.name = "иу10";
 
-
+Удаление записи из таблицы
 DELETE FROM mydb.kafedra WHERE idkafedra=1;
