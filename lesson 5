@@ -13,3 +13,9 @@ WHERE name = "иу10";
 SELECT student_has_kafedra.student_idstudent FROM kafedra
 INNER JOIN student_has_kafedra ON student_has_kafedra.kafedra_idkafedra = idkafedra
 WHERE name = "иу10";
+
+
+SELECT student.Name, student.Surname FROM kafedra
+INNER JOIN student_has_kafedra ON student_has_kafedra.kafedra_idkafedra = idkafedra
+INNER JOIN student ON student.idstudent = student_has_kafedra.student_idstudent
+WHERE kafedra.name = "иу10";
