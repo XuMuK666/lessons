@@ -1,0 +1,3 @@
+Вложенный запрос 
+
+SELECT * FROM student_has_kafedra where kafedra_idkafedra = (SELECT idkafedra FROM kafedra WHERE name = "иу10")
