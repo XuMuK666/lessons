@@ -1,0 +1,69 @@
+class Likes():
+    """docstring"""
+ 
+    def __init__(self, typeL, doors, tires, url):
+        """Constructor"""
+        self.type = typeL
+        self.owner_id = doors
+        self.item_id = tires
+        self.page_url = url
+        self.friends_only = 0
+    
+    def add(self):
+    	#запрос на добавление лайка конкретному пользователю
+        pass
+    def delete(self):
+       	pass
+    def getList(self):
+    	#ListofLikes = ...
+    	return ListofLikes
+    def isLiked(self):
+    	pass
+
+class Post():
+	def __init__(self,obj):
+		self.Заголовок = obj.get('Zagokovok')
+		self.Тело записи= obj.get('Body')
+		self.комментарии= ...
+		self.лайки= []
+
+	def getLikes(self):
+		self.лайки = Likes(self......).getList()
+
+
+class Wall():
+    """docstring"""
+ 
+    def __init__(self, typeL, doors, tires, url):
+        """Constructor"""
+        self.domain = typeL
+        self.owner_id = doors
+        self.offset = tires
+        self.count = url
+    
+    def get(self):
+    	#запрос на выгрузку информации о постах
+        response = [{Заголовок, Тело записи, комментарии, лайки}] #посты
+        for post in response:
+        	Post(post)
+   
+class UserWall(Wall):
+	"""docstring for ClassName"""
+	def __init__(self, arg):
+		super(ClassName, self).__init__()
+		self.arg = arg
+
+class GroupWall(Wall):
+	"""docstring for ClassName"""
+	def __init__(self, arg):
+		super(ClassName, self).__init__()
+		self.arg = arg
+		
+		
+ 
+if __name__ == "__main__":
+    car = Vehicle("blue", 5, 4)
+    print(car.color)
+    
+    truck = Vehicle("red", 3, 6)
+    print(truck.color)
