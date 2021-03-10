@@ -14,8 +14,8 @@ type Restorans struct {
 	OperatingCompany string     `json:"OperatingCompany"`
 	TypeObject string     `json:"TypeObject"`
 	AdmArea string     `json:"AdmArea"`
-	Longitude_WGS84 string     `json:"Longitude_WGS84"`
-	Latitude_WGS84 string     `json:"Latitude_WGS84"`
+	Longitude_WGS84 interface{}     `json:"Longitude_WGS84"`
+	Latitude_WGS84 interface{}     `json:"Latitude_WGS84"`
 
 }
 
