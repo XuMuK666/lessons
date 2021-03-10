@@ -34,6 +34,25 @@ func readJSON(filepath string) (array restArray){
 }
 
 
+func ArrayDelimeter(maxLen int, array [] restArray) ([][] restArray) {
+	x := len(array)
+	destArray := [][] restArray{}
+	if (x>maxLen){
+		res1:= ArrayDelimeter(maxLen, array[:(x/2)])
+		res2:= ArrayDelimeter(maxLen, array[(x/2):])
+		for i:=0; i<len(res1);i++ {
+			destArray = append(destArray, res1[i])
+		}
+		for i:=0; i<len(res2);i++ {
+			destArray = append(destArray, res2[i])
+		}
+
+	} else {
+		destArray = append(destArray, array)
+	}
+	return destArray
+}
+
 
 func main() {
 	restArray := readJSON("")
