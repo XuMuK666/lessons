@@ -2,7 +2,9 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
+	"math"
 	"os"
 )
 
@@ -15,7 +17,7 @@ type Restorans struct {
 	TypeObject string     `json:"TypeObject"`
 	AdmArea string     `json:"AdmArea"`
 	Longitude_WGS84 interface{}     `json:"Longitude_WGS84"`
-	Latitude_WGS84 interface{}     `json:"Latitude_WGS84"`
+	Latitude_WGS84 interface{}    `json:"Latitude_WGS84"`
 
 }
 
@@ -33,10 +35,20 @@ func readJSON(filepath string) (array restArray){
 	return array
 }
 
+func Path(Longitude float64, Latitude float64, r Restorans) float64 {
+	var f float64
+	var w float64
+	var h float64
+	w = r.Latitude_WGS84.(float64)
+	h = r.Longitude_WGS84.(float64)
 
-func ArrayDelimeter(maxLen int, array [] restArray) ([][] restArray) {
+	f =  math.Sqrt(math.Pow(Latitude - w, 2) + math.Pow(Longitude - h, 2))
+	return  f
+}
+
+func ArrayDelimeter(maxLen int, array  restArray) ([] restArray) {
 	x := len(array)
-	destArray := [][] restArray{}
+	destArray := [] restArray{}
 	if (x>maxLen){
 		res1:= ArrayDelimeter(maxLen, array[:(x/2)])
 		res2:= ArrayDelimeter(maxLen, array[(x/2):])
@@ -53,9 +65,8 @@ func ArrayDelimeter(maxLen int, array [] restArray) ([][] restArray) {
 	return destArray
 }
 
-
 func main() {
-	restArray := readJSON("")
-
+	arr := ArrayDelimeter(100, readJSON("data.xlsx"))
+	fmt.Println(arr)
 
 }
