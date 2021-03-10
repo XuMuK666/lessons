@@ -1,0 +1,42 @@
+package main
+
+import (
+	"encoding/json"
+	"io/ioutil"
+	"os"
+)
+
+type Restorans struct {
+	GlobalId string     `json:"global_id"`
+	ID string     `json:"ID"`
+	Name string     `json:"Name"`
+	IsNetObject string     `json:"IsNetObject"`
+	OperatingCompany string     `json:"OperatingCompany"`
+	TypeObject string     `json:"TypeObject"`
+	AdmArea string     `json:"AdmArea"`
+	Longitude_WGS84 string     `json:"Longitude_WGS84"`
+	Latitude_WGS84 string     `json:"Latitude_WGS84"`
+
+}
+
+type restArray [] Restorans
+
+
+func readJSON(filepath string) (array restArray){
+
+	jsonFile, _ := os.Open(filepath)
+	defer jsonFile.Close()
+
+	byteValue, _ := ioutil.ReadAll(jsonFile)
+	json.Unmarshal(byteValue, &array)
+
+	return array
+}
+
+
+
+func main() {
+	restArray := readJSON("")
+
+
+}
