@@ -82,10 +82,10 @@ func main() {
 	fmt.Println(arr)
 
 	var wg sync.WaitGroup
-
+	Chanel := make(chan restArray)
 	for item := range arr {
 		wg.Add(1)
-		go func (array restArray, lat float64, lon float64, group *sync.WaitGroup) (restArray) {
+		go func (array restArray, lat float64, lon float64, group *sync.WaitGroup, c chan restArray) {
 			tempArray := make(restArray,0)
 			for item := range array {
 				pathToRest := Path(lon, lat, array[item])
@@ -94,12 +94,27 @@ func main() {
 				tempArray = append(tempArray, tmpVal)
 			}
 			//сортировка
-			
+
+			c <- tempArray[:3]
+
 			defer wg.Done()
-			
-			return tempArray[:3]
-		} (arr[item], lat, lon, &wg)
-		
+		} (arr[item], lat, lon, &wg, Chanel)
 	}
 	wg.Wait()
+	close(Chanel)
+
+	tempArray := make(restArray,0) //полуотсортированный массив ресторанов
+	for {
+		values, ok := <- Chanel
+		if !ok {
+			break
+		}
+		if ok {
+			for i :=range values{
+				tempArray = append(tempArray, values[i])
+			}
+		}
+	}
+	
+	//финальный раз сортируем массив ресторанов
 }
