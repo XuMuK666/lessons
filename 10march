@@ -6,6 +6,8 @@ import (
 	"io/ioutil"
 	"math"
 	"os"
+	"strconv"
+	"sync"
 )
 
 type Restorans struct {
@@ -18,6 +20,7 @@ type Restorans struct {
 	AdmArea string     `json:"AdmArea"`
 	Longitude_WGS84 interface{}     `json:"Longitude_WGS84"`
 	Latitude_WGS84 interface{}    `json:"Latitude_WGS84"`
+	Path float64
 
 }
 
@@ -66,7 +69,37 @@ func ArrayDelimeter(maxLen int, array  restArray) ([] restArray) {
 }
 
 func main() {
-	arr := ArrayDelimeter(100, readJSON("data.xlsx"))
+	if len(os.Args) == 1 {
+		fmt.Println("Нет аргументов")
+		os.Exit(1)
+	}
+	arguments := os.Args
+	lat, _ := strconv.ParseFloat(arguments[2], 64)
+	lon, _ := strconv.ParseFloat(arguments[3], 64)
+	arr := ArrayDelimeter(100, readJSON("data.json"))
+	fmt.Println(lat)
+	fmt.Println(lon)
 	fmt.Println(arr)
 
+	var wg sync.WaitGroup
+
+	for item := range arr {
+		wg.Add(1)
+		go func (array restArray, lat float64, lon float64, group *sync.WaitGroup) (restArray) {
+			tempArray := make(restArray,0)
+			for item := range array {
+				pathToRest := Path(lon, lat, array[item])
+				tmpVal:= array[item] //текущий ресторан
+				tmpVal.Path = pathToRest
+				tempArray = append(tempArray, tmpVal)
+			}
+			//сортировка
+			
+			defer wg.Done()
+			
+			return tempArray[:3]
+		} (arr[item], lat, lon, &wg)
+		
+	}
+	wg.Wait()
 }
