@@ -4,11 +4,13 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"math"
+	"net/http"
 	"os"
 	"sort"
-	"strconv"
 	"sync"
+	"time"
 )
 
 type Restorans struct {
@@ -70,57 +72,86 @@ func ArrayDelimeter(maxLen int, array  restArray) ([] restArray) {
 }
 
 func main() {
-	if len(os.Args) == 1 {
-		fmt.Println("Нет аргументов")
-		os.Exit(1)
-	}
-	arguments := os.Args
-	fmt.Println(arguments)
-	lat, _ := strconv.ParseFloat(arguments[1], 64)
-	lon, _ := strconv.ParseFloat(arguments[2], 64)
-	arr := ArrayDelimeter(100, readJSON("data.json"))
-	fmt.Println(lat)
-	fmt.Println(lon)
-	fmt.Println(arr)
 
-	var wg sync.WaitGroup
-	Chanel := make(chan restArray, 10000)
-	for item := range arr {
-		wg.Add(1)
-		go func (array restArray, lat float64, lon float64, group *sync.WaitGroup, c chan restArray) {
-			tempArray := make(restArray,0)
-			for item := range array {
-				pathToRest := Path(lon, lat, array[item])
-				tmpVal:= array[item] //текущий ресторан
-				tmpVal.Path = pathToRest
-				tempArray = append(tempArray, tmpVal)
-			}
-			sort.SliceStable(tempArray, func(i, j int) bool { return tempArray[i].Path < tempArray[j].Path})
+	handler := http.NewServeMux()
 
-			c <- tempArray[:3]
+	// Регистрация pprof-обработчиков
+	//pp.HandleFunc("/debug/pprof/", pprof.Index)
+	//pp.HandleFunc("/debug/pprof/cmdline", pprof.Cmdline)
+	//pp.HandleFunc("/debug/pprof/profile", pprof.Profile)
+	//pp.HandleFunc("/debug/pprof/symbol", pprof.Symbol)
+	//pp.HandleFunc("/debug/pprof/trace", pprof.Trace)
+	//
+	////
+	// Обработчик сообщений от Каше
+	//
+	handler.HandleFunc("/index", func(w http.ResponseWriter, r *http.Request) {
+		
 
-			defer wg.Done()
-		} (arr[item], lat, lon, &wg, Chanel)
-	}
-	wg.Wait()
-	close(Chanel)
+		lat := 45.23456
+		lon := 56.5676
+		arr := ArrayDelimeter(100, readJSON("data.json"))
+		fmt.Println(lat)
+		fmt.Println(lon)
+		fmt.Println(arr)
 
-	tempArray := make(restArray,0) //полуотсортированный массив ресторанов
-	for {
-		values, ok := <- Chanel
-		if !ok {
-			break
+		var wg sync.WaitGroup
+		Chanel := make(chan restArray, 10000)
+		for item := range arr {
+			wg.Add(1)
+			go func (array restArray, lat float64, lon float64, group *sync.WaitGroup, c chan restArray) {
+				tempArray := make(restArray,0)
+				for item := range array {
+					pathToRest := Path(lon, lat, array[item])
+					tmpVal:= array[item] //текущий ресторан
+					tmpVal.Path = pathToRest
+					tempArray = append(tempArray, tmpVal)
+				}
+				sort.SliceStable(tempArray, func(i, j int) bool { return tempArray[i].Path < tempArray[j].Path})
+
+				c <- tempArray[:3]
+
+				defer wg.Done()
+			} (arr[item], lat, lon, &wg, Chanel)
 		}
-		if ok {
-			for i :=range values{
-				tempArray = append(tempArray, values[i])
+		wg.Wait()
+		close(Chanel)
+
+		tempArray := make(restArray,0) //полуотсортированный массив ресторанов
+		for {
+			values, ok := <- Chanel
+			if !ok {
+				break
+			}
+			if ok {
+				for i :=range values{
+					tempArray = append(tempArray, values[i])
+				}
 			}
 		}
+
+		sort.SliceStable(tempArray, func(i, j int) bool { return tempArray[i].Path < tempArray[j].Path})
+
+		for _, value := range tempArray[:3] {
+			fmt.Println(value)
+		}
+
+		w.WriteHeader(http.StatusOK)
+		r.Close = true
+	}) // each request calls handler
+
+
+	s := &http.Server{
+		ReadHeaderTimeout: 30 * time.Second,
+		ReadTimeout:       30 * time.Second,
+		WriteTimeout:      30 * time.Second,
+		Handler:           pp,
+		Addr:              ":3000",
 	}
 
-	sort.SliceStable(tempArray, func(i, j int) bool { return tempArray[i].Path < tempArray[j].Path})
 
-	for _, value := range tempArray[:3] {
-		fmt.Println(value)
-	}
+	log.Println(s.ListenAndServe())
+
+
+
 }
