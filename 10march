@@ -84,7 +84,7 @@ func main() {
 	fmt.Println(arr)
 
 	var wg sync.WaitGroup
-	Chanel := make(chan restArray)
+	Chanel := make(chan restArray, 10000)
 	for item := range arr {
 		wg.Add(1)
 		go func (array restArray, lat float64, lon float64, group *sync.WaitGroup, c chan restArray) {
