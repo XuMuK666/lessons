@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"math"
 	"os"
+	"sort"
 	"strconv"
 	"sync"
 )
@@ -93,7 +94,7 @@ func main() {
 				tmpVal.Path = pathToRest
 				tempArray = append(tempArray, tmpVal)
 			}
-			//сортировка
+			sort.SliceStable(tempArray, func(i, j int) bool { return tempArray[i].Path < tempArray[j].Path})
 
 			c <- tempArray[:3]
 
@@ -115,6 +116,10 @@ func main() {
 			}
 		}
 	}
+
+	sort.SliceStable(tempArray, func(i, j int) bool { return tempArray[i].Path < tempArray[j].Path})
 	
-	//финальный раз сортируем массив ресторанов
+	for _, value := range tempArray[:3] {
+		fmt.Println(value)
+	}
 }
