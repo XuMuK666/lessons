@@ -13,9 +13,9 @@ import (
 
 type Restorans struct {
 	GlobalId string     `json:"global_id"`
-	ID string     `json:"ID"`
-	Name string     `json:"Name"`
-	IsNetObject string     `json:"IsNetObject"`
+	ID string     		`json:"ID"`
+	Name string     	`json:"Name"`
+	IsNetObject string   `json:"IsNetObject"`
 	OperatingCompany string     `json:"OperatingCompany"`
 	TypeObject string     `json:"TypeObject"`
 	AdmArea string     `json:"AdmArea"`
@@ -75,8 +75,9 @@ func main() {
 		os.Exit(1)
 	}
 	arguments := os.Args
-	lat, _ := strconv.ParseFloat(arguments[2], 64)
-	lon, _ := strconv.ParseFloat(arguments[3], 64)
+	fmt.Println(arguments)
+	lat, _ := strconv.ParseFloat(arguments[1], 64)
+	lon, _ := strconv.ParseFloat(arguments[2], 64)
 	arr := ArrayDelimeter(100, readJSON("data.json"))
 	fmt.Println(lat)
 	fmt.Println(lon)
@@ -118,7 +119,7 @@ func main() {
 	}
 
 	sort.SliceStable(tempArray, func(i, j int) bool { return tempArray[i].Path < tempArray[j].Path})
-	
+
 	for _, value := range tempArray[:3] {
 		fmt.Println(value)
 	}
